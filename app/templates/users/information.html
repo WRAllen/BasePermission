@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+{% block title %}用户信息{% endblock %}
+{% block css %}
+{% include "users/css.html" %}
+{% endblock %}
+
+
+
+{% block content %}
+
+<style type="text/css">
+	.form-group {
+    margin-bottom: 15px;
+    width: 40%;
+    float: left;
+    margin-left: 7%;
+}
+#info_warn{
+	display: none;
+}
+#email_warn{
+  display: none;
+}
+</style>
+<div class="row">
+	<div class="col-lg-12 col-xs-12">
+		<div class="panel panel-default card-view  pa-0">
+			<div class="panel-wrapper collapse in">
+				<div class="panel-body  pa-0">
+					<div class="profile-box">
+						<div class="profile-cover-pic" id="info_bgimg" style="background: url('/static/upload/img/default.jpg') no-repeat;background-size: cover;">
+							<div class="profile-image-overlay"></div>
+						</div>
+						<div class="profile-info text-center">
+							<div class="profile-img-wrap">
+								<form id="myform" action="/upload_file" method='post' enctype=multipart/form-data>
+									<img id="show_img" class="inline-block mb-10" src="{{userinfo.imgurl}}" alt="user" />
+									<div class="fileupload btn btn-default">
+										<span class="btn-text">更换头像</span>
+										<input id="file_up" class="upload" type="file" name="file">
+									</div>
+								</form>
+							</div>
+							<h5 class="block mt-10 mb-5 weight-500 capitalize-font">个人信息</h5>
+						</div>
+						<div class="social-info">
+							<!-- Row -->
+							<div class="row">
+								<div class="col-lg-12 col-xs-12">
+									<div class="">
+										<div class="panel-wrapper collapse in">
+											<div class="panel-body pa-0">
+												<div class="col-sm-12 col-xs-12">
+													<div class="form-wrap">
+														<form action="#">
+															
+															<div class="form-body overflow-hide">
+																<div class="form-group">
+																	<label class="control-label mb-10" for="exampleInputuname_01">姓名</label>
+																	<input type="text" class="form-control" placeholder="暂未填写" value="{% if userinfo.name %}{{userinfo.name}}{% else %}{% endif %}" disabled="disabled">
+																</div>
+																<div class="form-group">
+																	<label class="control-label mb-10">性别</label>
+																	<input type="text" class="form-control" placeholder="暂未填写" value="{% if userinfo.sex == 0 %}男{% elif userinfo.sex == 1 %}女{% else %}{% endif %}" disabled="disabled">
+																</div>
+																<div class="form-group">
+																	<label class="control-label mb-10" for="exampleInputpwd_01">工号</label>
+																	<input type="text" class="form-control" placeholder="暂未填写" value="{% if userinfo.num %}{{userinfo.num}}{% else %}{% endif %}" disabled="disabled">
+																</div>
+																<div class="form-group">
+																	<label class="control-label mb-10" for="exampleInputEmail_01">邮箱地址</label>
+																	<input type="text" class="form-control" placeholder="暂未填写" value="{% if userinfo.email %}{{userinfo.email}}{% else %}{% endif %}" disabled="disabled">
+																</div>
+																<div class="form-group">
+																	<label class="control-label mb-10" for="exampleInputContact_01">手机号</label>
+																	<input type="text" class="form-control" placeholder="暂未填写" value="{% if userinfo.tel %}{{userinfo.tel}}{% else %}{% endif %}" disabled="disabled">
+																</div>
+																<div class="form-group">
+																	<label class="control-label mb-10">生日</label>
+																	<input type="text" class="form-control" placeholder="暂未填写" value="{% if userinfo.birthday %}{{userinfo.birthday}}{% else %}{% endif %}" disabled="disabled">
+																</div>
+															</div>
+
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div>
+
+								<button style="width: 30%;margin-left:12%;float: left;border: 1px solid #999;" class="btn btn-default btn-block btn-outline btn-anim mt-30" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i><span class="btn-text">编辑个人信息</span></button>
+
+								<button style="width: 30%;margin-right: 10%;float: right;border: 1px solid #999" class="btn btn-default btn-block btn-outline btn-anim mt-30" data-toggle="modal" data-target="#myPasswd"><i class="fa fa-pencil"></i><span class="btn-text">修改密码</span></button>
+								<div style="clear: both;"></div>
+							</div>
+							
+							<div id="myModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<h5 class="modal-title" id="myModalLabel">编辑信息</h5>
+										</div>
+										<div class="modal-body">
+											<!-- Row -->
+											<div class="row">
+												<div class="col-lg-12">
+													<div class="">
+														<div class="panel-wrapper collapse in">
+															<div class="panel-body pa-0">
+																<div class="col-sm-12 col-xs-12">
+																	<div class="form-wrap">
+																		<form action="" method="get">
+																			<div class="form-body overflow-hide">
+																				<div class="form-group">
+																					<label class="control-label mb-10" for="exampleInputuname_1">姓名</label>
+																					<div class="input-group">
+																						<input type="text" class="form-control" id="nick_name" placeholder="请输入姓名" value="{% if userinfo.name %}{{userinfo.name}}{% else %}{% endif %}" name="nick_name">
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label class="control-label mb-10">性别</label>
+																					{% if userinfo.sex == 1 %}
+																						<div class="radio">
+																							<input type="radio" name="radio1" id="radio_1" value="0">
+																							<label for="radio_1">
+																								男
+																							</label>
+																						</div>
+																						<div class="radio">
+																							<input type="radio" name="radio1" id="radio_2" checked="checked" value="1">
+																							<label for="radio_2">
+																								女
+																							</label>
+																						</div>
+																					{% elif userinfo.sex == 0 %}
+																						<div class="radio">
+																							<input type="radio" name="radio1" id="radio_1" checked="checked" value="0">
+																							<label for="radio_1">
+																								男
+																							</label>
+																						</div>
+																						<div class="radio">
+																							<input type="radio" name="radio1" id="radio_2"  value="1">
+																							<label for="radio_2">
+																								女
+																							</label>
+																						</div>
+																					{% else %}
+																						<div class="radio">
+																							<input type="radio" name="radio1" id="radio_1" value="0">
+																							<label for="radio_1">
+																								男
+																							</label>
+																						</div>
+																						<div class="radio">
+																							<input type="radio" name="radio1" id="radio_2" value="1">
+																							<label for="radio_2">
+																								女
+																							</label>
+																						</div>
+																					{% endif %}
+																					
+																				</div>
+																				<div class="form-group">
+																					<label class="control-label mb-10" for="exampleInputEmail_1">邮箱地址</label>
+																					<label id="email_warn" style="color: #e33;" class="control-label mb-10" for="exampleInputuname_1">请输入有效的E_mail！</label>
+																					<div class="input-group">
+
+																						<input type="email" class="form-control" id="email_add" placeholder="请输入新的邮箱地址" value="{% if userinfo.email %}{{userinfo.email}}{% else %}{% endif %}" name="email_add">
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label class="control-label mb-10" for="exampleInputuname_1">手机号</label>
+																					<div class="input-group">
+
+																						<input type="text" class="form-control" placeholder="请输入手机号" name="phone_input" value="{% if userinfo.tel %}{{userinfo.tel}}{% else %}{% endif %}" id="phone_num">
+																					</div>
+																				</div>
+																				<div class="form-group">
+																					<label class="control-label mb-10" for="exampleInputuname_1">生日</label>
+																					<div class="input-group">
+
+																						<input type="text" class="form-control" placeholder="生日格式：年-月-日" name="birthday"  value="{% if userinfo.birthday %}{{userinfo.birthday}}{% else %}{% endif %}" id="birthday">
+																					</div>
+																				</div>
+				
+																			</div>
+																			<div class="modal-footer">
+																			<button type="button" id="submit_btn" class="btn btn-success waves-effect">更新</button>
+																			<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+																		</div>
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									<!-- /.modal-content -->
+								</div>
+								<!-- /.modal-dialog -->
+							</div>
+								
+
+								<div id="myPasswd" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+											<h5 class="modal-title" id="myModalLabel">修改密码</h5>
+										</div>
+										<div class="modal-body">
+											<!-- Row -->
+											<div class="row">
+												<div class="col-lg-12">
+													<div class="">
+														<div class="panel-wrapper collapse in">
+															<div class="panel-body pa-0">
+																<div class="col-sm-12 col-xs-12">
+																	<div class="form-wrap">
+																		<form action="" method="get">
+																			<div class="form-body overflow-hide">
+
+																				<div class="form-group" style="width: 100%;">
+																					<label class="control-label mb-10" for="exampleInputuname_1">原始密码</label>
+																					<div class="input-group"  style="width: 60%;">
+																						<input type="password" class="form-control" id="old_paw" placeholder="请输入原始密码" name="old_paw">
+																					</div>
+																				</div>
+																				<div class="form-group" style="width: 100%;">
+																					<label class="control-label mb-10" for="exampleInputuname_1">新密码</label>
+																					<div class="input-group" style="width: 60%;">
+
+																						<input type="password" class="form-control" id="new_paw" placeholder="请输入新密码" name="new_paw">
+																					</div>
+																				</div>
+																				<div class="form-group" style="width: 100%;">
+																					<label class="control-label mb-10" for="exampleInputuname_1">确认新密码</label>
+																					<label id="info_warn" style="color: #e33;" class="control-label mb-10" for="exampleInputuname_1">两次密码输入不一致</label>
+																					<div class="input-group" style="width: 60%;">
+
+																						<input type="password" class="form-control" id="confirm_paw" placeholder="请输入确认密码" name="confirm_paw">
+																					</div>
+																				</div>
+
+																			</div>
+																			<div class="modal-footer">
+																			<button type="button" id="change_btn" class="btn btn-success waves-effect" data-dismiss="">修改</button>
+																			<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+																		</div>
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									<!-- /.modal-content -->
+								</div>
+								<!-- /.modal-dialog -->
+							</div>
+
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block js %}
+{% include "auth/js.html" %}
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$('#submit_btn').on('click',function(){
+			var nick_name = $('#nick_name').val();
+			var sex_check =  document.getElementsByName('radio1');
+			for (var i=0;i<sex_check.length;i++){
+				if(sex_check[i].checked){
+					var radios = sex_check[i].value;
+				}
+			}
+			var email_add = $('#email_add').val();
+			var phone_num = $('#phone_num').val();
+			var birthday = $('#birthday').val();
+			var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/; 
+			if(!reg.test(email_add)){
+				$('#email_add').focus();
+       			$('#email_warn').show();
+       			$('#email_add').css({'border':'1px solid #e33'});
+				timer=setTimeout(function(){
+           			$('#email_warn').hide();
+           			$('#email_add').css({'border':'1px solid rgba(33, 33, 33, 0.12)'});
+       			},1500);
+			}else{
+				$.ajax({
+					url:'updatainfo',
+					method:'GET',
+					data:{
+						'nickname':nick_name,
+						'radios_check':radios,
+						'email_add':email_add,
+						'phone_num':phone_num,
+						'birthday':birthday,
+					},
+					success:function(response){
+						window.location.reload();
+					}
+				})
+			}
+		})
+
+		$('#change_btn').on('click',function(){
+			var timer=null;
+			clearTimeout(timer);
+			var old_paw = $('#old_paw').val();
+			var new_paw = $('#new_paw').val();
+			var confirm_paw = $('#confirm_paw').val();
+			if(new_paw==confirm_paw){
+				$.ajax({
+					url:'updatapaw',
+					method:'GET',
+					data:{
+						'old_paw':old_paw,
+						'new_paw':new_paw,
+						'confirm_paw':confirm_paw,
+					},
+					success:function(response){
+						if (response=="success") {
+							window.location.reload();
+						}
+						else{
+							alert(response)
+							window.location.reload();
+						}
+					}
+
+				})
+			}else{
+				$('#info_warn').show();
+				$('#new_paw').css({'border':'1px solid #e33'});
+				$('#confirm_paw').css({'border':'1px solid #e33'});
+				timer=setTimeout(function(){
+					$('#info_warn').hide();
+					$('#new_paw').css({'border':'1px solid rgba(33, 33, 33, 0.12)'});
+					$('#confirm_paw').css({'border':'1px solid rgba(33, 33, 33, 0.12)'});
+				},800);
+			}
+			
+		})
+		$('#file_up').on('change',function(){
+			var read= new FileReader();
+			f=document.getElementById('file_up').files[0];
+			read.readAsDataURL(f);
+			read.onload=function  (e) {
+				document.getElementById('show_img').src=this.result;
+			};
+			var form = new FormData(document.getElementById("myform")); 
+			$.ajax({
+				url:'upload_file',
+				type:"post",  
+			    data:form,  
+			    cache: false,  
+			    processData: false,  
+			    contentType: false, 
+			    success:function(data){  
+		            window.location.reload()
+		        },  
+		        error:function(e){  
+		          alert("网络错误，请重试！！");  
+		        } 
+			})
+
+		})
+	});
+
+</script>
+{% endblock %}

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>toloog</title>
+		<meta name="description" content="Hound is a Dashboard & Admin Site Responsive Template by hencework." />
+		<meta name="keywords" content="admin, admin dashboard, admin template, cms, crm, Hound Admin, Houndadmin, premium admin templates, responsive admin, sass, panel, software, ui, visualization, web app, application" />
+		<meta name="author" content="hencework"/>
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		
+		<!-- vector map CSS -->
+		<link href="../../static/vendors/bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css" rel="stylesheet" type="text/css"/>
+		
+		
+		
+		<!-- Custom CSS -->
+		<link href="../../static/dist/css/style.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<!--Preloader-->
+		<div class="preloader-it">
+			<div class="la-anim-1"></div>
+		</div>
+		<!--/Preloader-->
+		
+		<div class="wrapper pa-0">
+			<header class="sp-header">
+				<div class="sp-logo-wrap pull-left">
+					<a href="index.html">
+						<img class="brand-img mr-10" src="../../static/dist/img/logo.png" alt="brand"/>
+						<span class="brand-text">Toloog</span>
+					</a>
+				</div>
+				<div class="clearfix"></div>
+			</header>
+			
+			<!-- Main Content -->
+			<div class="page-wrapper pa-0 ma-0 auth-page">
+				<div class="container-fluid">
+					<!-- Row -->
+					<div class="table-struct full-width full-height">
+						<div class="table-cell vertical-align-middle auth-form-wrap">
+						{% block content %}
+								<div class="container" style="width: 100%;text-align: center;">
+									{% for message in get_flashed_messages() %}
+										<div class="">
+											<button type="button" class="close" data-dismiss="alert"></button>
+											    {{ message }}
+										</div>
+									{% endfor %}
+
+									{% block page_content %}{% endblock %}
+								</div>
+						{% endblock %}
+							<div class="auth-form  ml-auto mr-auto no-float">
+								<div class="row">
+									<div class="col-sm-12 col-xs-12">
+											
+										<div class="form-wrap">
+											<h2>
+										        您好, {{ current_user.username }}!
+										    </h2>
+										    <h5>您的账号还没进行激活,请联系toloog公司技术人员进行激活</h5>
+										    <h5>祝你生活工作愉快O(∩_∩)O~</h5>
+										</div>
+									</div>	
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- /Row -->	
+				</div>
+				
+			</div>
+			<!-- /Main Content -->
+		
+		</div>
+		<!-- /#wrapper -->
+		
+		<!-- JavaScript -->
+		
+		<!-- jQuery -->
+		<script src="../../static/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+		
+		<!-- Bootstrap Core JavaScript -->
+		<script src="../../static/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="../../static/vendors/bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JavaScript -->
+		<script src="../../static/dist/js/jquery.slimscroll.js"></script>
+		
+		<!-- Init JavaScript -->
+		<script src="../../static/dist/js/init.js"></script>
+	</body>
+</html>

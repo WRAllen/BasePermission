@@ -1,0 +1,5 @@
+1,角色管理,auth.roleManage
+2,资源管理,auth.urlManage
+3,用户管理,auth.userManage
+4,订单报表,main.orderReport
+5,商品报表,main.productReport

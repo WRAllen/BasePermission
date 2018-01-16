@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}权限管理{% endblock %}
+{% block css %}
+{% include "auth/css.html" %}
+{% endblock %}
+
+{% block js %}
+{% include "auth/js.html" %}
+{% endblock %}
+
+
+{% block content %}
+<script src="{{ url_for('static',filename='vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<div class="col-md-12">
+    <div class="panel panel-default card-view">
+        <div class="panel-heading">
+            <div class="pull-left">  
+            <h6 class="panel-title txt-dark">角色</h6> 
+                <select id="sel">
+                    {% for role in allrole %}
+                    {% if role.id != 1 %}
+                        <option  id="role_{{role.id}}">{{role.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="panel-wrapper collapse in">
+            <div class="panel-body">
+                <div class="panel-group accordion-struct" role="tablist" aria-multiselectable="true">
+                {% for menu in allmenu %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="heading_5">
+                            <a role="button" data-toggle="collapse" href="#menu{{menu.id}}" aria-expanded="false" class="collapsed">{{menu.name}}</a> 
+                        </div>
+                        <div id="menu{{menu.id}}" class="panel-collapse collapse" role="tabpanel" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body pa-15">
+                                <form action="" method="get" style="margin-left: 3%">
+                                {% for url in allurl %}
+
+                                    {% if url[1].id == menu.id %}
+                                        <input type="checkbox" name="checkbox" id="{{url[0].id}}" checked="checked" value="{{url[0].name}}">{{url[0].name}}
+                                        <br>
+                                    {% endif %}
+
+                                {% endfor %}
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}                    
+                </div>
+                <button class="btn btn-primary btn-sm" style="margin-left: 4%;" id="btn">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+  .accordion-struct.panel-group .panel .panel-heading.activestate{
+    background: #fff;
+      border-bottom: 1px solid rgba(33, 33, 33, 0.1);
+      
+  }
+  .accordion-struct.panel-group .panel .panel-heading.activestate a{
+    color: #878787!important;
+  }
+</style>
+
+<script type="text/javascript">
+    $(function(){  
+        $("#btn").click(function(){
+            var obj=document.getElementsByName('checkbox');
+            var now_url=[]
+            for (var i=0;i<obj.length;i++){
+                if(obj[i].checked){
+                    now_url.push(obj[i].id)   
+                }
+            }
+
+            $.ajax({
+                url:'updaterolesource',
+                method:'POST',
+                data:{"role_id":$('#sel option:selected').attr("id"),'now_url':now_url},
+                success:function(responce){
+                   alert(responce)      
+                } 
+
+            });
+
+        });
+        $("#sel").change(function(){
+            $.ajax({
+                url:'updatesource',
+                method:'GET',
+                data:{"role_name":$('#sel option:selected').val()},
+                success:function(responce){
+                    var arr=JSON.parse(responce)
+                    {% for url in allurl %}
+                        $('#'+"{{url[0].id}}").attr('checked',false)
+                    {% endfor %}
+                    var array=arr['array']
+                    for (var i = 0; i <array.length; i++) {
+                        $('#'+array[i]).prop('checked','True')
+                    }        
+                } 
+            });
+        })
+    }) 
+</script>
+
+
+{% endblock %}

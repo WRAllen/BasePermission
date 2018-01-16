@@ -1,0 +1,124 @@
+{% extends "base.html" %}                                              
+{% block title %}资源管理{% endblock %}
+{% block css %}
+{% include "auth/css.html" %}
+{% endblock %}
+
+{% block js %}
+{% include "auth/js.html" %}
+{% endblock %}
+
+
+{% block content %}
+<script src="{{ url_for('static',filename='vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="panel panel-default card-view">
+			<div class="panel-heading">
+				<div class="pull-left">
+					<h6 class="panel-title txt-dark">资源管理</h6>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="panel-wrapper collapse in">
+				<div class="panel-body">
+					<div class="table-wrap">
+						<div class="table-responsive">
+							<table id="datable_1" class="table table-hover display  pb-30" >
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>名字</th>
+										<th>分类</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody>
+								{% for url in allurl %}
+									<tr>
+										<th>{{url.id}}</th>
+										<th>{{url.name}}</th>
+										<th>{{url.menus[0].name}}</th>
+										<th>
+											<button id='btn{{url.id}}' class="btn btn-default btn-block btn-outline btn-anim mt-30" data-toggle="modal" data-target="#myModal{{url.id}}" style="padding: 5px;width: 70px;margin-top: 0 !important;">
+												<i  class="fa fa-pencil"></i>
+													<span class="btn-text">修改</span>
+											</button>
+											<div id="myModal{{url.id}}" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+															<h5 class="modal-title" id="myModalLabel">资源编辑</h5>
+														</div>
+														<div class="modal-body">
+															<div class="col-lg-12">
+																<div class="panel-wrapper collapse in">
+																	<div class="panel-body pa-0">
+																		<div class="col-sm-12 col-xs-12">
+																			<div class="form-wrap">
+																				<form action="#">
+																					<div class="form-body overflow-hide">
+																						<div class="form-group">
+																							<label>资源</label>
+																							<div>
+																								<input type="text" id="nam_{{url.id}}" value="{{url.name}} ">																						
+																							</div>
+																						</div>																				
+																						<div class="form-group">
+																							<label>类别</label>
+																							<select id="sel_{{url.id}}">
+																			                    {% for menu in allmenu %}
+																			                        <option  id="men_{{menu.id}}">{{menu.name}}</option>
+																			                    {% endfor %}
+																			                </select>
+																						</div>
+																					</div>			
+																				</form>																				
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-success waves-effect" id='submit{{url.id}}'>保存</button>
+														<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+													</div>
+												</div>
+											</div>
+										</th>
+									</tr>
+									<script type="text/javascript">
+										$(function(){					
+											$('#sel_{{url.id}}').val('{{url.menus[0].name}}')
+											
+											$("#submit{{url.id}}").click(function(){
+												$.ajax({
+									                url:'updateurlmenu',
+									                method:'GET',
+									                data:{
+									                	"now_url_menu":$('#sel_{{url.id}} option:selected').val(),
+									                	"now_url_name":$('#nam_{{url.id}}').val(),
+									                	"url_id":"{{url.id}}"
+									            	},
+									                success:function(responce){
+									                    window.location.reload()     
+									                } 
+           										 });												
+											})
+										})
+									</script>
+								{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+
+{% endblock %}
+

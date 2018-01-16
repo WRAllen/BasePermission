@@ -1,0 +1,24 @@
+<div class="fixed-sidebar-left">
+    <ul class="nav navbar-nav side-nav nicescroll-bar">
+        <li class="navigation-header">
+            <span>数据报表</span> 
+            <i class="zmdi zmdi-more"></i>
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-toggle="collapse" data-target="#dashboard_dr"><div class="pull-left"><i class="zmdi zmdi-landscape mr-20"></i><span class="right-nav-text">商品与订单</span></div><div class="pull-right"><i class="zmdi zmdi-caret-down"></i></div><div class="clearfix"></div></a>
+            <ul id="dashboard_dr" class="collapse collapse-level-1">
+                <li>
+                    <a  href="/">数据中心</a>
+                </li>
+                {% for url in current_user.user_can() %}
+
+                    {% if url.menus[0]  and url.menus[0].id in [2,3] %}
+                        <li>
+                            <a href="{{url_for(url.url_func)}}">{{url.name}}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</div>
