@@ -274,7 +274,7 @@
                             <a href="{{url_for(url.url_func)}}"><i class="zmdi zmdi-settings"></i><span>{{url.name}}</span></a>
                         </li>
                     {% else %}
-                        {% if url.menus[0].id == 1 %}
+                        {% if url.menus and url.menus[0].id == 1 %}
                             <li>
                                 <a href="{{url_for(url.url_func)}}"><i class="zmdi zmdi-settings"></i><span>{{url.name}}</span></a>
                             </li>

@@ -12,7 +12,7 @@
                 </li>
                 {% for url in current_user.user_can() %}
 
-                    {% if url.menus[0]  and url.menus[0].id in [2,3] %}
+                    {% if url.menus  and url.menus[0].id in [2,3] %}
                         <li>
                             <a href="{{url_for(url.url_func)}}">{{url.name}}</a>
                         </li>
