@@ -1,5 +1,5 @@
 {% extends "base.html" %}                                              
-{% block title %}权限管理{% endblock %}
+{% block title %}用户管理{% endblock %}
 {% block css %}
 {% include "auth/css.html" %}
 {% endblock %}
@@ -100,11 +100,13 @@
 																							<div style="width:200px;height:80px;overflow-y: auto;" >
 																								<div>
 																									{% for role in allrole %}
+																									{% if role.id != 1 %}
 																										{% if role in user.roles %}
 																											<input type="checkbox" name="rol_{{user.num}}" value="{{role.id}}" checked="True">{{role.name}}<br>
 																										{% else %}
 																											<input type="checkbox" name="rol_{{user.num}}" value="{{role.id}}">{{role.name}}<br>
 																										{% endif %}
+																									{% endif %}
 																									{% endfor %}
 																								</div>
 																							</div>

@@ -14,8 +14,9 @@
 <div class="col-md-12">
     <div class="panel panel-default card-view">
         <div class="panel-heading">
+
             <div class="pull-left">  
-            <h6 class="panel-title txt-dark">角色</h6> 
+            	<h6 class="panel-title txt-dark">角色</h6> 
                 <select id="sel">
                     {% for role in allrole %}
                     {% if role.id != 1 %}
@@ -23,6 +24,14 @@
                     {% endif %}
                     {% endfor %}
                 </select>
+            </div>
+
+            <div class="pull-left"> 
+                <button class="btn btn-default btn-icon-anim btn-square" id="btn_update_delete"><i class="fa fa-pencil"></i></button>
+            </div>
+
+            <div class="pull-left"> 
+                <button  class="btn  btn-success btn-outline btn-rounded" data-toggle="modal" data-target="#myModal" id="btn_add">添加</button>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -56,6 +65,99 @@
         </div>
     </div>
 </div>
+
+
+<div id="myModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h5 class="modal-title" id="myModalLabel">添加角色</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="">
+							<div class="panel-wrapper collapse in">
+								<div class="panel-body pa-0">
+									<div class="col-sm-12 col-xs-12">
+										<div class="form-wrap">
+											<div class="form-body overflow-hide">
+												<input class="form-control" placeholder="请输入角色名" id="role_name">
+											</div>
+											<div class="modal-footer">
+											<button type="button" id="btn_sure" class="btn btn-success waves-effect">添加</button>
+											<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+											</div>											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>
+
+
+<div id="update_delete" class="modal fade in">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h5 class="modal-title" id="update_deleteLabel">修改角色</h5>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="">
+							<div class="panel-wrapper collapse in">
+								<div class="panel-body pa-0">
+									<div class="col-sm-12 col-xs-12">
+										<div class="form-wrap">
+											<div class="form-body overflow-hide" id="">
+												<div id = 'show_role_name'>
+													
+												</div>
+												<input class="form-control" placeholder="请输入新的角色名" id="new_role_name">
+											</div>
+											<div class="modal-footer">
+                                            <button class="btn btn-danger btn-anim" id="btn_delete">
+                                                <i class="fa fa-trash-o"></i>
+                                                <span class="btn-text">
+                                                    <font style="vertical-align: inherit;">
+                                                    <font style="vertical-align: inherit;">删除</font>
+                                                    </font>
+                                                </span>
+                                            </button>
+                                            <button class="btn btn-success btn-anim" id="btn_update">
+                                                <i class="icon-rocket"></i>
+                                                <span class="btn-text">
+                                                    <font style="vertical-align: inherit;">
+                                                    <font style="vertical-align: inherit;">更新</font>
+                                                    </font>
+                                                </span>
+                                            </button>
+											<button type="button" id="btn_cancer" class="btn btn-default waves-effect">取消</button>
+											</div>											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>
+
+
+
+
+
 <style type="text/css">
   .accordion-struct.panel-group .panel .panel-heading.activestate{
     background: #fff;
@@ -65,6 +167,22 @@
   .accordion-struct.panel-group .panel .panel-heading.activestate a{
     color: #878787!important;
   }
+  .pull-left{float: left;padding:0 0 0 10px;}
+
+  #btn_add{
+        height: 40px;
+    margin-top: 15px;
+  }
+
+
+  #btn_update_delete{
+        height: 28px;
+    margin-top: 20px;
+  }
+
+
+  #update_delete{display: none;}
+
 </style>
 
 <script type="text/javascript">
@@ -82,8 +200,8 @@
                 url:'updaterolesource',
                 method:'POST',
                 data:{"role_id":$('#sel option:selected').attr("id"),'now_url':now_url},
-                success:function(responce){
-                   alert(responce)      
+                success:function(response){
+                   alert(response)      
                 } 
 
             });
@@ -94,8 +212,8 @@
                 url:'updatesource',
                 method:'GET',
                 data:{"role_name":$('#sel option:selected').val()},
-                success:function(responce){
-                    var arr=JSON.parse(responce)
+                success:function(response){
+                    var arr=JSON.parse(response)
                     {% for url in allurl %}
                         $('#'+"{{url[0].id}}").attr('checked',false)
                     {% endfor %}
@@ -106,6 +224,80 @@
                 } 
             });
         })
+
+        // 添加角色
+        $("#btn_sure").click(function(){
+        	if ($('#role_name').val()) {
+	        	$.ajax({
+				url:"/auth/addrole",
+					data:{
+						"role_name":$('#role_name').val(),
+			 		},
+					success:function(response){
+						if (response=="success") {
+	        				window.location.href="/auth/rolemanage"	        		
+	        			}else{
+	        				alert("该角色已存在！")
+	        			}
+	        		}
+	        	})
+        	}else{
+        		alert("请输入角色名！")
+        	} 
+        })
+
+        // 修改角色
+        $("#btn_update").click(function(){
+        	if ($('#new_role_name').val()) {
+	        	$.ajax({
+				url:"/auth/updaterolename",
+				data:{
+						"old_role_name":$('#sel option:selected').val(),
+						"new_role_name":$('#new_role_name').val(),
+			 		},
+					success:function(response){
+						if (response=="success") {
+	        				window.location.href="/auth/rolemanage"	       		
+	        			}else{
+	        				alert("修改失败！")
+	        			}
+	        		}
+	        	})
+        	}else{
+        		alert("请输入角色名！")
+        	} 
+        })
+
+        // 删除角色
+        $("#btn_delete").click(function(){
+            if(confirm("确定删除?")){
+                $.ajax({
+                    url:"/auth/deleterole",
+                    data:{
+                        "role_name":$('#sel option:selected').val(),
+                    },
+                    success:function(response){
+                        if (response=="success") {
+                            window.location.href="/auth/rolemanage"             
+                        }else{
+                            alert("修改失败！")
+                        }
+                    }
+                })
+            }
+        })
+
+        $("#btn_update_delete").click(function(){
+        	$("#show_role_name").html("")
+        	$("#show_role_name").append("<h5>当前角色为:"+$('#sel option:selected').val()+"</h5>")
+        	$("#update_delete").show()
+        })
+
+         $("#btn_cancer").click(function(){
+        	$("#update_delete").hide()
+        })
+
+
     }) 
 </script>
 

@@ -18,10 +18,11 @@ def login():
         user = User.query.filter_by(num=form.num.data).first() 
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
-            resp = make_response(redirect(request.args.get('next') or url_for('main.index')))
-        
-            return resp
-
+            last_ip = request.remote_addr
+            if user.ip_check(last_ip):
+                return make_response(redirect(request.args.get('next') or url_for('main.index')))
+            else:
+                return VIE['ip_error']
         flash(VIE['login_auth'])
 
     return render_template('auth/login.html', form=form)
@@ -65,8 +66,6 @@ def before_request():
         return redirect(url_for('auth.unconfirmed'))
 
 
-
-
 @auth.route('/unconfirmed')
 def unconfirmed():
     '''
@@ -83,9 +82,6 @@ def unconfirmed():
 @permissionControl('auth.userManage')
 @login_required 
 def userManage():
-    '''
-        管理用户和角色
-    '''
     alluser=User.query.order_by(User.id).all()
     allrole=Role.query.order_by(Role.id).all()
     allperm=Perm.query.order_by(Perm.id).all()
@@ -209,4 +205,136 @@ def updateUrlMenu():
 	db.session.add(url)
 
 	return "ad"
+
+@auth.route('/addrole')
+@login_required
+def addRole():
+    role_name = request.args.get("role_name")
+
+    role = Role.query.filter_by(name = role_name).first()
+    if role:
+        return "error"
+    else:
+        role = Role(name = role_name)
+        db.session.add(role)
+        return "success"
+
+@auth.route('/updaterolename')
+@login_required
+def updateRoleName():
+    new_role_name = request.args.get("new_role_name")
+    old_role_name = request.args.get("old_role_name")
+
+    role = Role.query.filter_by(name = old_role_name).first()
+    if role:
+        role.name = new_role_name
+        return "success"
+    else:
+        return "error"
+
+
+@auth.route("/deleterole")
+@login_required
+def deleteRole():
+    role_name = request.args.get("role_name")
+    role = Role.query.filter_by(name = role_name).first()
+    if role:
+        role.urls=[]
+        users = User.query.all()
+
+        for user in users:
+            if role in user.roles:
+                user.roles.remove(role)
+                
+        db.session.commit()
+        ###需要手动提交才可以，不然关联不会被删除        
+        db.session.delete(role)
+        return "success"
+    else:
+        return "error"
     
+    
+
+
+@auth.route('/addurl')
+@login_required
+def addURL():
+    url_name = request.args.get("url_name")
+    url_func = request.args.get("url_func")
+
+    url = Url.query.filter_by(name = url_name).first()
+    if url:
+        return "error"
+    else:
+        url = Url(name = url_name,url_func = url_func)
+        ini_menu = Menu.query.filter_by(name = '未分类').first()
+        url.menus=[ini_menu]
+        db.session.add(url)
+
+        superadmin = Role.query.filter_by(id=1).first()
+        superadmin.urls.append(url)
+        return "success"
+
+
+@auth.route("/deleteurl")
+@login_required
+def deleteURL():
+    url_id = request.args.get("url_id")
+    url = Url.query.filter_by(id = url_id).first()
+    if url:
+        url.menus=[]
+        roles = Role.query.all()
+
+        for role in roles:
+            if url in role.urls:
+                role.urls.remove(url)
+                
+        db.session.commit()
+        ###需要手动提交才可以，不然关联不会被删除        
+        db.session.delete(url)
+        return "success"
+    else:
+        return "error"
+
+@auth.route('/addmenu')
+@login_required
+def aaddMenu():
+    menu_name = request.args.get("menu_name")
+
+    menu = Menu.query.filter_by(name = menu_name).first()
+    if menu:
+        return "error"
+    else:
+        menu = Menu(name = menu_name)
+        db.session.add(menu)
+        return "success"
+
+@auth.route("/deletemenu")
+@login_required
+def deleteMenu():
+    menu_name = request.args.get("menu_name")
+    menu = Menu.query.filter_by(name = menu_name).first()
+    if menu:
+        urls = Url.query.all()
+
+        for url in urls:
+            if menu in url.menus:
+                url.menus.remove(menu)
+                if len(url.menus)==0:
+                    ini_menu = Menu.query.filter_by(name = '未分类').first()
+                    url.menus=[ini_menu]
+                
+        db.session.commit()
+        ###需要手动提交才可以，不然关联不会被删除        
+        db.session.delete(menu)
+        return "success"
+    else:
+        return "error"
+
+@auth.route("/aaa")
+@permissionControl('auth.ceshi')
+@login_required
+def ceshi():
+    return "success"
+
+

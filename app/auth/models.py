@@ -134,6 +134,24 @@ class User(UserMixin, BaseTable):
         else:
             return False
 
+    def ip_check(self,last_ip):
+        if current_user.ip != None:
+            array = []
+            for x in range(0,4):
+                new = last_ip.split('.')[x]
+                old = current_user.ip.split('.')[x]
+                if new == old :
+                    array.append(x)  
+
+            if 0 in array and 1 in array and 2 in array:
+                current_user.ip = last_ip
+                return True
+            else:
+                return False
+        else:
+            current_user.ip = last_ip
+            return True
+
 
 
 @login_manager.user_loader
