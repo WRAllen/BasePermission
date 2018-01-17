@@ -13,6 +13,17 @@
 <style type="text/css">
 	.pull-left{float: left;padding:0 0 0 10px;}
 	#update_menu_div{display: none;}
+	#btn_add{
+		margin-left: 10px;
+	}
+	#btn_add_menu{height: 38px;margin-left: 10px;}
+	#sel_menu{height: 30px;}
+	#update_menu{
+		margin: 0 10px;
+	}
+	#datable_1 th{
+		text-align: center;
+	}
 </style>
 
 
@@ -22,17 +33,23 @@
 		<div class="panel panel-default card-view">
 			<div class="panel-heading">
 				<div class="pull-left">
-					<h6 class="panel-title txt-dark">资源管理</h6>
+					<h6 class="panel-title txt-dark" style="line-height: 2.2;font-size: 18px;">资源管理</h6>
 				</div>
 				<div class="pull-left"> 
-                <button  class="btn  btn-success btn-outline btn-rounded" data-toggle="modal" data-target="#myModal" id="btn_add">添加</button>
+                <button  class="btn  btn-success btn-sm" data-toggle="modal" data-target="#myModal" id="btn_add">添加</button>
             	</div>
             	<div class="pull-left">
-            	<button class="btn btn-twitter btn-icon-anim btn-circle" data-toggle="modal" data-target="#Menu" id="btn_add_menu"><i class="icon-settings"></i>
+            	<button class="btn btn-default btn-icon-anim btn-square" data-toggle="modal" data-target="#Menu" id="btn_add_menu"><i class="fa fa-pencil"></i></button>
             	</div>
 				<div class="clearfix"></div>
 			</div>
-			<div class="panel-wrapper collapse in">
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+			<div class="panel-wrapper collapse in panel panel-default card-view">
 				<div class="panel-body">
 					<div class="table-wrap">
 						<div class="table-responsive">
@@ -52,7 +69,7 @@
 										<th>{{url.name}}</th>
 										<th>{{url.menus[0].name}}</th>
 										<th>
-											<button id='btn{{url.id}}' class="btn btn-default btn-block btn-outline btn-anim mt-30" data-toggle="modal" data-target="#myModal{{url.id}}" style="padding: 5px;width: 70px;margin-top: 0 !important;">
+											<button id='btn{{url.id}}' class="btn btn-default btn-block btn-outline btn-anim mt-30" data-toggle="modal" data-target="#myModal{{url.id}}" style="padding: 5px;width: 70px;margin-top: 0 !important;float: left;margin-right: 15px;    margin-left: 36%;">
 												<i  class="fa fa-pencil"></i>
 													<span class="btn-text">修改</span>
 											</button>
@@ -155,7 +172,6 @@
 			</div>
 		</div>	
 	</div>
-</div>
 
 
 <!-- 增加urldiv -->
@@ -213,7 +229,7 @@
 									<div class="col-sm-12 col-xs-12">
 										<div class="form-wrap">
 											<div class="form-group">
-												<label>类别</label>
+												<label style="font-size: 16px;margin-left: 10px;">类别:</label>
 												<select id="sel_menu">
 								                    {% for menu in allmenu %}
 								                    	{% if menu.name != "未分类" %}
@@ -222,8 +238,8 @@
 								                    {% endfor %}
 								                </select>
 
-								                <button class="btn btn-twitter btn-icon-anim btn-circle" id = "update_menu"><i class="fa fa-pencil"></i>
-								                <button class="btn btn-twitter btn-icon-anim btn-circle" id = "del_menu"><i class="icon-trash"></i>								                												
+								                <button class="btn btn-default btn-icon-anim btn-circle" id = "update_menu"><i class="fa fa-pencil"></i>
+								                <button class="btn btn-default btn-icon-anim btn-circle" id = "del_menu"><i class="icon-trash"></i>								                												
 											</div>
 
 											<div class="form-body overflow-hide">

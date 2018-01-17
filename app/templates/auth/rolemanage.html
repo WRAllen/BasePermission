@@ -54,14 +54,17 @@
                         </div>
                         <div id="menu{{menu.id}}" class="panel-collapse collapse" role="tabpanel" aria-expanded="false" style="height: 0px;">
                             <div class="panel-body pa-15">
-                                <form action="" method="get" style="margin-left: 3%">
+                                <form action="" method="get" style="margin-left: 3%">                    
                                 {% for url in allurl %}
-
                                     {% if url[1].id == menu.id %}
-                                        <input type="checkbox" name="checkbox" id="{{url[0].id}}" checked="checked" value="{{url[0].name}}">{{url[0].name}}
-                                        <br>
+                                        {% if url[0] in firstrole.urls %}
+                                            <input type="checkbox" name="checkbox" id="{{url[0].id}}"  checked="checked" value="{{url[0].name}}">{{url[0].name}}
+                                            <br>                                    
+                                        {% else %}
+                                            <input type="checkbox" name="checkbox" id="{{url[0].id}}"  value="{{url[0].name}}">{{url[0].name}}
+                                            <br>                                    
+                                        {% endif %}
                                     {% endif %}
-
                                 {% endfor %}
                             </form>
                             </div>
@@ -110,7 +113,7 @@
     </div>
 </div>
 
-
+<!-- 修改角色 -->
 <div id="update_delete" class="modal fade in">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -161,9 +164,6 @@
         </div>
     </div>
 </div>
-<div id="bg_box"></div>
-
-
 
 
 
@@ -214,6 +214,8 @@
 
 <script type="text/javascript">
     $(function(){  
+
+        // 修改角色权限
         $("#btn").click(function(){
             var obj=document.getElementsByName('checkbox');
             var now_url=[]
@@ -232,8 +234,9 @@
                 } 
 
             });
-
         });
+
+        // 切换角色显示权限
         $("#sel").change(function(){
             $.ajax({
                 url:'updatesource',
@@ -321,11 +324,10 @@
             $('#bg_box').show()
         })
 
-         $("#btn_cancer").click(function(){
+        $("#btn_cancer").click(function(){
             $("#update_delete").hide()
              $('#bg_box').hide()
         })
-
 
     }) 
 </script>

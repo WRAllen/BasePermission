@@ -110,20 +110,19 @@ def roleManage():
     '''
         管理角色和路由
     '''
-    allurl=[]
+    allurl = []
 
-    allrole=Role.query.order_by(Role.id).all()
-    allmenu=Menu.query.order_by(Menu.id).all()
+    allrole = Role.query.order_by(Role.id).all()
+    allmenu = Menu.query.order_by(Menu.id).all()
 
-    result2=Url.query.order_by(Url.id).all()
+    firstrole = Role.query.filter_by(id = 2).first()
+
+    result2 = Url.query.order_by(Url.id).all()
     for x2 in result2:
-        if x2.menus:
-            allurl.append([x2,x2.menus[0]])
-        else:
-            allurl.append([x2,''])
+        allurl.append([x2,x2.menus[0]])
         
 
-    return render_template('auth/permission.html',allrole=allrole,allurl=allurl,allmenu=allmenu)
+    return render_template('auth/rolemanage.html',allrole=allrole,allurl=allurl,allmenu=allmenu,firstrole=firstrole)
 
 
 
@@ -343,6 +342,10 @@ def deleteMenu():
     else:
         return "error"
 
+
+@auth.route("/awdwadwadaw")
+def ceshi():
+	return "azwdawd"
 
 
 

@@ -7,7 +7,7 @@ from . import users
 from app.auth.permissioncontrol import permissionControl
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
-import json,os
+import json,os,time
 
 
 @users.route('/information')
@@ -67,16 +67,19 @@ def allowed_file(filename):
 
 @users.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
+    time_s=int(time.time())
     if request.method == 'POST':
         file = request.files['file']
+
         if file and allowed_file(file.filename):
-            derec_path=os.getcwd()
-            upload_path=derec_path+'/app/static/upload/img'
-            file.save(os.path.join(upload_path, file.filename))
+            derec_path = os.getcwd()
+            upload_path = derec_path+'/app/static/upload/img'
+            uploadname = (('%s'+file.filename)%time_s)
+            file.save(os.path.join(upload_path, uploadname))
             user = User.query.filter_by(id=current_user.id).first()
-            show_path='/static/upload/img'
-            user.imgurl=os.path.join(show_path, file.filename)
+            show_path = '/static/upload/img'
+            user.imgurl = os.path.join(show_path, uploadname)
             db.session.add(user)
             
-    return os.path.join(show_path, file.filename)
+    return '上传成功'
 
