@@ -194,23 +194,24 @@ def updateUrlMenu():
 	'''
 		ajax的访问地址,用于保存url与menu的关系
 	'''
-	now_url_menu=request.args.get('now_url_menu')
-	now_url_name=request.args.get('now_url_name')
-	url_id=request.args.get('url_id')
-	url=Url.query.filter_by(id=url_id).first()
-	menu=Menu.query.filter_by(name=now_url_menu).first()
-
-	url.name=now_url_name
-	url.menus=[menu]
+	now_url_menu = request.args.get('now_url_menu')
+	now_url_name = request.args.get('now_url_name')
+	url_id = request.args.get('url_id')
+	url = Url.query.filter_by(id=url_id).first()
+	menu = Menu.query.filter_by(name=now_url_menu).first()
+	url.name = now_url_name
+	url.menus = [menu]
 	db.session.add(url)
 
-	return "ad"
+	return "success"
+
+
+
 
 @auth.route('/addrole')
 @login_required
 def addRole():
     role_name = request.args.get("role_name")
-
     role = Role.query.filter_by(name = role_name).first()
     if role:
         return "error"
@@ -224,7 +225,6 @@ def addRole():
 def updateRoleName():
     new_role_name = request.args.get("new_role_name")
     old_role_name = request.args.get("old_role_name")
-
     role = Role.query.filter_by(name = old_role_name).first()
     if role:
         role.name = new_role_name
@@ -241,11 +241,9 @@ def deleteRole():
     if role:
         role.urls=[]
         users = User.query.all()
-
         for user in users:
             if role in user.roles:
-                user.roles.remove(role)
-                
+                user.roles.remove(role)   
         db.session.commit()
         ###需要手动提交才可以，不然关联不会被删除        
         db.session.delete(role)
@@ -300,7 +298,6 @@ def deleteURL():
 @login_required
 def aaddMenu():
     menu_name = request.args.get("menu_name")
-
     menu = Menu.query.filter_by(name = menu_name).first()
     if menu:
         return "error"
@@ -308,6 +305,21 @@ def aaddMenu():
         menu = Menu(name = menu_name)
         db.session.add(menu)
         return "success"
+
+
+@auth.route('/updatemenu')
+@login_required
+def updateMenuName():
+    new = request.args.get("new_menu_name")
+    old = request.args.get("old_menu_name")
+
+    menu = Menu.query.filter_by(name = old).first()
+    if menu:
+        menu.name = new
+        return "success"
+    else:
+        return "error"
+
 
 @auth.route("/deletemenu")
 @login_required
@@ -331,10 +343,6 @@ def deleteMenu():
     else:
         return "error"
 
-@auth.route("/aaa")
-@permissionControl('auth.ceshi')
-@login_required
-def ceshi():
-    return "success"
+
 
 

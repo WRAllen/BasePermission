@@ -11,31 +11,40 @@
 
 {% block content %}
 <script src="{{ url_for('static',filename='vendors/bower_components/jquery/dist/jquery.min.js') }}"></script>
-<div class="col-md-12">
-    <div class="panel panel-default card-view">
-        <div class="panel-heading">
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default card-view">
+            <div class="panel-heading">
+                <div class="pull-left">  
+                    <h6 class="panel-title txt-dark">角色</h6> 
+                </div>
+                <div class="pull-left">  
+                    
+                    <select id="sel">
+                        {% for role in allrole %}
+                        {% if role.id != 1 %}
+                            <option  id="role_{{role.id}}">{{role.name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div class="pull-left">  
-            	<h6 class="panel-title txt-dark">角色</h6> 
-                <select id="sel">
-                    {% for role in allrole %}
-                    {% if role.id != 1 %}
-                        <option  id="role_{{role.id}}">{{role.name}}</option>
-                    {% endif %}
-                    {% endfor %}
-                </select>
-            </div>
+                <div class="pull-left"> 
+                    <button class="btn btn-default btn-icon-anim btn-square" id="btn_update_delete"><i class="fa fa-pencil"></i></button>
+                </div>
 
-            <div class="pull-left"> 
-                <button class="btn btn-default btn-icon-anim btn-square" id="btn_update_delete"><i class="fa fa-pencil"></i></button>
+                <div class="pull-left"> 
+                    <button  class="btn  btn-success btn-sm" data-toggle="modal" data-target="#myModal" id="btn_add">添加</button>
+                </div>
+                <div class="clearfix"></div>
             </div>
-
-            <div class="pull-left"> 
-                <button  class="btn  btn-success btn-outline btn-rounded" data-toggle="modal" data-target="#myModal" id="btn_add">添加</button>
-            </div>
-            <div class="clearfix"></div>
         </div>
-        <div class="panel-wrapper collapse in">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel-wrapper collapse in panel panel-default card-view">
             <div class="panel-body">
                 <div class="panel-group accordion-struct" role="tablist" aria-multiselectable="true">
                 {% for menu in allmenu %}
@@ -68,62 +77,61 @@
 
 
 <div id="myModal" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h5 class="modal-title" id="myModalLabel">添加角色</h5>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="">
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body pa-0">
-									<div class="col-sm-12 col-xs-12">
-										<div class="form-wrap">
-											<div class="form-body overflow-hide">
-												<input class="form-control" placeholder="请输入角色名" id="role_name">
-											</div>
-											<div class="modal-footer">
-											<button type="button" id="btn_sure" class="btn btn-success waves-effect">添加</button>
-											<button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
-											</div>											
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>	
-		</div>
-	</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h5 class="modal-title" id="myModalLabel">添加角色</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="">
+                            <div class="panel-wrapper collapse in">
+                                <div class="panel-body pa-0">
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class="form-wrap">
+                                            <div class="form-body overflow-hide">
+                                                <input class="form-control" placeholder="请输入角色名" id="role_name">
+                                            </div>
+                                            <div class="modal-footer">
+                                            <button type="button" id="btn_sure" class="btn btn-success waves-effect">添加</button>
+                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">取消</button>
+                                            </div>                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
 </div>
 
 
 <div id="update_delete" class="modal fade in">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h5 class="modal-title" id="update_deleteLabel">修改角色</h5>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="">
-							<div class="panel-wrapper collapse in">
-								<div class="panel-body pa-0">
-									<div class="col-sm-12 col-xs-12">
-										<div class="form-wrap">
-											<div class="form-body overflow-hide" id="">
-												<div id = 'show_role_name'>
-													
-												</div>
-												<input class="form-control" placeholder="请输入新的角色名" id="new_role_name">
-											</div>
-											<div class="modal-footer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="update_deleteLabel">修改角色</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="">
+                            <div class="panel-wrapper collapse in">
+                                <div class="panel-body pa-0">
+                                    <div class="col-sm-12 col-xs-12">
+                                        <div class="form-wrap">
+                                            <div class="form-body overflow-hide" id="">
+                                                <div id = 'show_role_name'>
+                                                    
+                                                </div>
+                                                <input class="form-control" placeholder="请输入新的角色名" id="new_role_name">
+                                            </div>
+                                            <div class="modal-footer">
                                             <button class="btn btn-danger btn-anim" id="btn_delete">
                                                 <i class="fa fa-trash-o"></i>
                                                 <span class="btn-text">
@@ -140,19 +148,20 @@
                                                     </font>
                                                 </span>
                                             </button>
-											<button type="button" id="btn_cancer" class="btn btn-default waves-effect">取消</button>
-											</div>											
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>	
-		</div>
-	</div>
+                                            <button type="button" id="btn_cancer" class="btn btn-default waves-effect">取消</button>
+                                            </div>                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
 </div>
+<div id="bg_box"></div>
 
 
 
@@ -170,19 +179,37 @@
   .pull-left{float: left;padding:0 0 0 10px;}
 
   #btn_add{
-        height: 40px;
-    margin-top: 15px;
+    margin-left: 15px;
   }
-
+ .pull-left h6.txt-dark{
+    line-height: 2.3;
+    font-size: 18px;
+    margin-left: 15px;
+ }
 
   #btn_update_delete{
-        height: 28px;
-    margin-top: 20px;
+        height: 38px;
+        margin-left: 10px;
+  }
+  #sel{
+    height: 38px;
+    margin-left: 10px;
+  }
+  #show_role_name{
+    margin-bottom: 10px;
   }
 
-
   #update_delete{display: none;}
-
+  #bg_box{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 1040;
+    display: none;
+  }
 </style>
 
 <script type="text/javascript">
@@ -227,45 +254,45 @@
 
         // 添加角色
         $("#btn_sure").click(function(){
-        	if ($('#role_name').val()) {
-	        	$.ajax({
-				url:"/auth/addrole",
-					data:{
-						"role_name":$('#role_name').val(),
-			 		},
-					success:function(response){
-						if (response=="success") {
-	        				window.location.href="/auth/rolemanage"	        		
-	        			}else{
-	        				alert("该角色已存在！")
-	        			}
-	        		}
-	        	})
-        	}else{
-        		alert("请输入角色名！")
-        	} 
+            if ($('#role_name').val()) {
+                $.ajax({
+                url:"/auth/addrole",
+                    data:{
+                        "role_name":$('#role_name').val(),
+                    },
+                    success:function(response){
+                        if (response=="success") {
+                            window.location.href="/auth/rolemanage"                 
+                        }else{
+                            alert("该角色已存在！")
+                        }
+                    }
+                })
+            }else{
+                alert("请输入角色名！")
+            } 
         })
 
         // 修改角色
         $("#btn_update").click(function(){
-        	if ($('#new_role_name').val()) {
-	        	$.ajax({
-				url:"/auth/updaterolename",
-				data:{
-						"old_role_name":$('#sel option:selected').val(),
-						"new_role_name":$('#new_role_name').val(),
-			 		},
-					success:function(response){
-						if (response=="success") {
-	        				window.location.href="/auth/rolemanage"	       		
-	        			}else{
-	        				alert("修改失败！")
-	        			}
-	        		}
-	        	})
-        	}else{
-        		alert("请输入角色名！")
-        	} 
+            if ($('#new_role_name').val()) {
+                $.ajax({
+                url:"/auth/updaterolename",
+                data:{
+                        "old_role_name":$('#sel option:selected').val(),
+                        "new_role_name":$('#new_role_name').val(),
+                    },
+                    success:function(response){
+                        if (response=="success") {
+                            window.location.href="/auth/rolemanage"             
+                        }else{
+                            alert("修改失败！")
+                        }
+                    }
+                })
+            }else{
+                alert("请输入角色名！")
+            } 
         })
 
         // 删除角色
@@ -288,13 +315,15 @@
         })
 
         $("#btn_update_delete").click(function(){
-        	$("#show_role_name").html("")
-        	$("#show_role_name").append("<h5>当前角色为:"+$('#sel option:selected').val()+"</h5>")
-        	$("#update_delete").show()
+            $("#show_role_name").html("")
+            $("#show_role_name").append("<h5>当前角色为:"+$('#sel option:selected').val()+"</h5>")
+            $("#update_delete").show()
+            $('#bg_box').show()
         })
 
          $("#btn_cancer").click(function(){
-        	$("#update_delete").hide()
+            $("#update_delete").hide()
+             $('#bg_box').hide()
         })
 
 
